@@ -1,0 +1,1709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XO MASTER - World Rank</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+body{
+    min-height:100vh;
+    font-family:Arial,sans-serif;
+    color:#fff;
+    background:
+        radial-gradient(circle at top,#18275a 0%,#080c1c 45%,#03050c 100%);
+    overflow-x:hidden;
+}
+
+.container{
+    width:94%;
+    max-width:520px;
+    margin:auto;
+    padding:20px 0 40px;
+}
+
+.glass{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 15px 40px rgba(0,0,0,.4);
+    backdrop-filter:blur(15px);
+    border-radius:25px;
+}
+
+/* ================= START SCREEN ================= */
+
+#startScreen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.logo{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.logo h1{
+    font-size:42px;
+    color:#00eaff;
+    text-shadow:0 0 20px #00eaff;
+    letter-spacing:2px;
+}
+
+.logo p{
+    color:#aaa;
+    margin-top:8px;
+    letter-spacing:3px;
+}
+
+.startCard{
+    padding:25px;
+}
+
+input{
+    width:100%;
+    padding:15px;
+    margin-bottom:18px;
+    border:none;
+    outline:none;
+    border-radius:15px;
+    background:rgba(0,0,0,.35);
+    color:#fff;
+    font-size:17px;
+    text-align:center;
+}
+
+input::placeholder{
+    color:#888;
+}
+
+.sectionTitle{
+    color:#aaa;
+    font-size:14px;
+    margin:10px 0;
+}
+
+.modeButtons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+button{
+    border:none;
+    outline:none;
+    cursor:pointer;
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    border-radius:15px;
+    padding:14px 10px;
+    background:linear-gradient(135deg,#18275a,#10172e);
+    border:1px solid rgba(255,255,255,.12);
+    transition:.2s;
+}
+
+button:active{
+    transform:scale(.94);
+}
+
+button.selected{
+    background:linear-gradient(135deg,#00bce8,#713cff);
+    box-shadow:0 0 20px rgba(0,234,255,.3);
+}
+
+.startBtn{
+    width:100%;
+    margin-top:20px;
+    padding:17px;
+    font-size:20px;
+    background:linear-gradient(135deg,#00eaff,#7c3cff);
+    box-shadow:0 0 25px rgba(0,234,255,.2);
+}
+
+.rankBtn{
+    width:100%;
+    margin-top:10px;
+}
+
+/* ================= GAME ================= */
+
+#gameScreen{
+    display:none;
+}
+
+.header{
+    padding:18px;
+    text-align:center;
+    margin-bottom:15px;
+}
+
+.header h2{
+    color:#00eaff;
+    text-shadow:0 0 12px #00eaff;
+}
+
+.header small{
+    color:#aaa;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-bottom:15px;
+}
+
+.stat{
+    padding:13px 5px;
+    text-align:center;
+}
+
+.stat b{
+    display:block;
+    font-size:23px;
+}
+
+.stat span{
+    color:#aaa;
+    font-size:12px;
+}
+
+/* ================= RANK CARD ================= */
+
+.rankCard{
+    padding:18px;
+    text-align:center;
+    margin-bottom:15px;
+}
+
+.rankIcon{
+    font-size:48px;
+}
+
+.rankName{
+    font-size:25px;
+    font-weight:bold;
+    margin:5px;
+    color:#ffd700;
+    text-shadow:0 0 15px currentColor;
+}
+
+.rp{
+    color:#aaa;
+    font-size:15px;
+}
+
+.world{
+    margin-top:9px;
+    color:#00eaff;
+    font-weight:bold;
+    font-size:17px;
+}
+
+.progress{
+    width:100%;
+    height:9px;
+    background:rgba(255,255,255,.1);
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:13px;
+}
+
+.progressBar{
+    height:100%;
+    width:2%;
+    background:linear-gradient(90deg,#00eaff,#7c3cff);
+    transition:.5s;
+}
+
+/* ================= BOARD ================= */
+
+.turn{
+    text-align:center;
+    color:#bbb;
+    margin:15px;
+    font-size:17px;
+}
+
+.board{
+    width:min(90vw,400px);
+    aspect-ratio:1;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.cell{
+    border-radius:20px;
+    background:rgba(255,255,255,.07);
+    border:2px solid rgba(255,255,255,.12);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:clamp(45px,15vw,80px);
+    font-weight:bold;
+    box-shadow:inset 0 0 20px rgba(0,0,0,.25);
+    cursor:pointer;
+    transition:.15s;
+}
+
+.cell:active{
+    transform:scale(.94);
+}
+
+.cell.x{
+    color:#00eaff;
+    text-shadow:0 0 25px #00eaff;
+}
+
+.cell.o{
+    color:#ff4fd8;
+    text-shadow:0 0 25px #ff4fd8;
+}
+
+.controls{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:20px;
+}
+
+.resetBtn{
+    background:linear-gradient(135deg,#ff3864,#7c3cff);
+}
+
+.backBtn{
+    background:#11182d;
+}
+
+/* ================= MODALS ================= */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.78);
+    z-index:100;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modalBox{
+    width:100%;
+    max-width:430px;
+    max-height:85vh;
+    overflow:auto;
+    padding:22px;
+}
+
+.modalBox h2{
+    text-align:center;
+    color:#00eaff;
+    margin-bottom:15px;
+}
+
+#resultText{
+    text-align:center;
+    font-size:28px;
+    margin:15px;
+}
+
+#rpChange{
+    text-align:center;
+    color:#00eaff;
+    font-size:20px;
+    margin-bottom:18px;
+}
+
+.resultButtons{
+    display:grid;
+    gap:10px;
+}
+
+.rankRow{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px;
+    margin:7px 0;
+    border-radius:13px;
+    background:rgba(255,255,255,.06);
+}
+
+.rankRow.current{
+    border:1px solid #00eaff;
+    box-shadow:0 0 15px rgba(0,234,255,.2);
+}
+
+.rankLeft{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.closeBtn{
+    width:100%;
+    margin-top:15px;
+}
+
+/* ================= ERROR ================= */
+
+#errorBox{
+    display:none;
+    position:fixed;
+    left:10px;
+    right:10px;
+    bottom:10px;
+    z-index:9999;
+    padding:15px;
+    border-radius:15px;
+    background:#650014;
+    color:white;
+    font-size:13px;
+    text-align:left;
+}
+</style>
+</head>
+
+<body>
+
+<div id="errorBox"></div>
+
+<!-- ================= START ================= -->
+
+<div id="startScreen">
+
+<div class="container">
+
+<div class="logo">
+    <h1>✕ XO MASTER ⭕</h1>
+    <p>WORLD RANK EDITION</p>
+</div>
+
+<div class="glass startCard">
+
+<input
+    id="playerName"
+    type="text"
+    placeholder="Enter your name"
+>
+
+<div class="sectionTitle">
+    GAME MODE
+</div>
+
+<div class="modeButtons">
+
+<button
+    id="aiBtn"
+    class="selected"
+    onclick="selectMode('ai')"
+>
+🤖 VS AI
+</button>
+
+<button
+    id="twoBtn"
+    onclick="selectMode('two')"
+>
+👥 2 PLAYERS
+</button>
+
+</div>
+
+<div id="difficultyArea">
+
+<div class="sectionTitle">
+    AI DIFFICULTY
+</div>
+
+<div class="modeButtons">
+
+<button
+    id="easyBtn"
+    onclick="selectDifficulty('easy')"
+>
+🟢 EASY
+</button>
+
+<button
+    id="mediumBtn"
+    class="selected"
+    onclick="selectDifficulty('medium')"
+>
+🟡 MEDIUM
+</button>
+
+<button
+    id="hardBtn"
+    onclick="selectDifficulty('hard')"
+>
+🔴 HARD
+</button>
+
+<button
+    id="legendBtn"
+    onclick="selectDifficulty('legend')"
+>
+👑 LEGENDARY
+</button>
+
+</div>
+
+</div>
+
+<button
+    class="startBtn"
+    onclick="startGame()"
+>
+🚀 START GAME
+</button>
+
+<button
+    class="rankBtn"
+    onclick="openRanks()"
+>
+🏆 RANKS
+</button>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- ================= GAME ================= -->
+
+<div id="gameScreen">
+
+<div class="container">
+
+<div class="glass header">
+
+<h2>✕ XO MASTER ⭕</h2>
+
+<small id="helloName">
+Player
+</small>
+
+</div>
+
+
+<div class="stats">
+
+<div class="glass stat">
+<b id="wins">0</b>
+<span>WINS</span>
+</div>
+
+<div class="glass stat">
+<b id="ties">0</b>
+<span>DRAWS</span>
+</div>
+
+<div class="glass stat">
+<b id="losses">0</b>
+<span>LOSSES</span>
+</div>
+
+</div>
+
+
+<div class="glass rankCard">
+
+<div
+    class="rankIcon"
+    id="rankIcon"
+>
+🥉
+</div>
+
+<div
+    class="rankName"
+    id="rankName"
+>
+Bronze I
+</div>
+
+<div class="rp">
+RP: <b id="rp">0</b>
+</div>
+
+<div class="world">
+🌍 WORLD RANK #<span id="worldRank">999,999</span>
+</div>
+
+<div class="progress">
+<div
+    class="progressBar"
+    id="progressBar"
+></div>
+</div>
+
+</div>
+
+
+<div
+    class="turn"
+    id="turnText"
+>
+PLAYER X'S TURN
+</div>
+
+
+<div
+    class="board"
+    id="board"
+>
+
+<div class="cell" data-index="0"></div>
+<div class="cell" data-index="1"></div>
+<div class="cell" data-index="2"></div>
+<div class="cell" data-index="3"></div>
+<div class="cell" data-index="4"></div>
+<div class="cell" data-index="5"></div>
+<div class="cell" data-index="6"></div>
+<div class="cell" data-index="7"></div>
+<div class="cell" data-index="8"></div>
+
+</div>
+
+
+<div class="controls">
+
+<button
+    class="resetBtn"
+    onclick="newRound()"
+>
+🔄 NEW ROUND
+</button>
+
+<button
+    class="backBtn"
+    onclick="backToMenu()"
+>
+🏠 MENU
+</button>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- ================= RESULT ================= -->
+
+<div
+    class="modal"
+    id="resultModal"
+>
+
+<div class="glass modalBox">
+
+<div id="resultText">
+🏆 VICTORY!
+</div>
+
+<div id="rpChange">
++30 RP
+</div>
+
+<div class="resultButtons">
+
+<button
+    onclick="closeResult();newRound()"
+>
+▶️ PLAY AGAIN
+</button>
+
+<button
+    onclick="closeResult();backToMenu()"
+>
+🏠 MAIN MENU
+</button>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- ================= RANKS ================= -->
+
+<div
+    class="modal"
+    id="rankModal"
+>
+
+<div class="glass modalBox">
+
+<h2>🏆 WORLD RANKS</h2>
+
+<div id="rankList"></div>
+
+<button
+    class="closeBtn"
+    onclick="closeRanks()"
+>
+CLOSE
+</button>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   PLAYER DATA
+===================================================== */
+
+var data = {
+    name:"",
+    wins:0,
+    losses:0,
+    ties:0,
+    rp:0
+};
+
+var mode = "ai";
+var difficulty = "medium";
+
+var board = [
+    "","","",
+    "","","",
+    "","",""
+];
+
+var currentPlayer = "X";
+var gameOver = false;
+
+
+/* =====================================================
+   RANK SYSTEM
+===================================================== */
+
+var ranks = [
+
+    {name:"Bronze I",min:0,max:99,icon:"🥉"},
+    {name:"Bronze II",min:100,max:199,icon:"🥉"},
+    {name:"Bronze III",min:200,max:299,icon:"🥉"},
+
+    {name:"Silver I",min:300,max:399,icon:"🥈"},
+    {name:"Silver II",min:400,max:499,icon:"🥈"},
+    {name:"Silver III",min:500,max:599,icon:"🥈"},
+
+    {name:"Gold I",min:600,max:699,icon:"🥇"},
+    {name:"Gold II",min:700,max:799,icon:"🥇"},
+    {name:"Gold III",min:800,max:899,icon:"🥇"},
+
+    {name:"Platinum I",min:900,max:999,icon:"💎"},
+    {name:"Platinum II",min:1000,max:1099,icon:"💎"},
+    {name:"Platinum III",min:1100,max:1199,icon:"💎"},
+
+    {name:"Diamond I",min:1200,max:1299,icon:"💠"},
+    {name:"Diamond II",min:1300,max:1399,icon:"💠"},
+    {name:"Diamond III",min:1400,max:1499,icon:"💠"},
+
+    {name:"Master",min:1500,max:1799,icon:"👑"},
+    {name:"Grandmaster",min:1800,max:2199,icon:"👑"},
+    {name:"Champion",min:2200,max:2599,icon:"🏆"},
+    {name:"Legendary",min:2600,max:2999,icon:"🔥"},
+    {name:"Mythic",min:3000,max:3499,icon:"⚡"},
+    {name:"WORLD #1",min:3500,max:999999,icon:"🌍"}
+
+];
+
+
+/* =====================================================
+   LOAD SAVED DATA
+===================================================== */
+
+try{
+
+    var saved =
+        localStorage.getItem("XO_MASTER_DATA");
+
+    if(saved){
+
+        var parsed =
+            JSON.parse(saved);
+
+        if(parsed){
+
+            data.name =
+                parsed.name || "";
+
+            data.wins =
+                Number(parsed.wins) || 0;
+
+            data.losses =
+                Number(parsed.losses) || 0;
+
+            data.ties =
+                Number(parsed.ties) || 0;
+
+            data.rp =
+                Number(parsed.rp) || 0;
+
+        }
+
+    }
+
+}catch(error){
+
+    console.log(error);
+
+}
+
+
+/* =====================================================
+   SAVE DATA
+===================================================== */
+
+function saveData(){
+
+    try{
+
+        localStorage.setItem(
+            "XO_MASTER_DATA",
+            JSON.stringify(data)
+        );
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+}
+
+
+/* =====================================================
+   GET CURRENT RANK
+===================================================== */
+
+function getRank(){
+
+    for(var i=0;i<ranks.length;i++){
+
+        if(
+            data.rp >= ranks[i].min &&
+            data.rp <= ranks[i].max
+        ){
+
+            return ranks[i];
+
+        }
+
+    }
+
+    return ranks[0];
+
+}
+
+
+/* =====================================================
+   WORLD RANK
+===================================================== */
+
+function getWorldRank(){
+
+    if(data.rp >= 3500){
+
+        return 1;
+
+    }
+
+    var position =
+        Math.floor(
+            1000000 /
+            (1 + data.rp / 500)
+        );
+
+    return Math.max(2,position);
+
+}
+
+
+/* =====================================================
+   UPDATE SCREEN
+===================================================== */
+
+function updateUI(){
+
+    var rank = getRank();
+
+    document.getElementById("wins")
+        .textContent = data.wins;
+
+    document.getElementById("losses")
+        .textContent = data.losses;
+
+    document.getElementById("ties")
+        .textContent = data.ties;
+
+    document.getElementById("rp")
+        .textContent = data.rp;
+
+    document.getElementById("worldRank")
+        .textContent =
+        getWorldRank().toLocaleString();
+
+    document.getElementById("rankName")
+        .textContent = rank.name;
+
+    document.getElementById("rankIcon")
+        .textContent = rank.icon;
+
+    document.getElementById("helloName")
+        .textContent =
+        data.name || "Player";
+
+
+    var percent;
+
+    if(rank.name === "WORLD #1"){
+
+        percent = 100;
+
+    }else{
+
+        percent =
+            ((data.rp - rank.min) /
+            (rank.max - rank.min + 1)) * 100;
+
+    }
+
+    percent =
+        Math.max(2,Math.min(100,percent));
+
+    document.getElementById("progressBar")
+        .style.width = percent + "%";
+
+}
+
+
+/* =====================================================
+   START GAME
+===================================================== */
+
+function startGame(){
+
+    var name =
+        document.getElementById("playerName")
+        .value
+        .trim();
+
+    if(name === ""){
+
+        name = "Player";
+
+    }
+
+    data.name = name;
+
+    saveData();
+
+    document.getElementById("startScreen")
+        .style.display = "none";
+
+    document.getElementById("gameScreen")
+        .style.display = "block";
+
+    updateUI();
+
+    newRound();
+
+}
+
+
+/* =====================================================
+   SELECT MODE
+===================================================== */
+
+function selectMode(newMode){
+
+    mode = newMode;
+
+    document.getElementById("aiBtn")
+        .classList.remove("selected");
+
+    document.getElementById("twoBtn")
+        .classList.remove("selected");
+
+
+    if(mode === "ai"){
+
+        document.getElementById("aiBtn")
+            .classList.add("selected");
+
+        document.getElementById("difficultyArea")
+            .style.display = "block";
+
+    }else{
+
+        document.getElementById("twoBtn")
+            .classList.add("selected");
+
+        document.getElementById("difficultyArea")
+            .style.display = "none";
+
+    }
+
+}
+
+
+/* =====================================================
+   SELECT DIFFICULTY
+===================================================== */
+
+function selectDifficulty(level){
+
+    difficulty = level;
+
+    var ids = [
+        "easyBtn",
+        "mediumBtn",
+        "hardBtn",
+        "legendBtn"
+    ];
+
+    for(var i=0;i<ids.length;i++){
+
+        document.getElementById(ids[i])
+            .classList.remove("selected");
+
+    }
+
+
+    var selectedId;
+
+    if(level === "easy"){
+        selectedId = "easyBtn";
+    }
+
+    if(level === "medium"){
+        selectedId = "mediumBtn";
+    }
+
+    if(level === "hard"){
+        selectedId = "hardBtn";
+    }
+
+    if(level === "legend"){
+        selectedId = "legendBtn";
+    }
+
+    document.getElementById(selectedId)
+        .classList.add("selected");
+
+}
+
+
+/* =====================================================
+   NEW ROUND
+===================================================== */
+
+function newRound(){
+
+    board = [
+        "","","",
+        "","","",
+        "","",""
+    ];
+
+    currentPlayer = "X";
+    gameOver = false;
+
+
+    var cells =
+        document.querySelectorAll(".cell");
+
+
+    for(var i=0;i<cells.length;i++){
+
+        cells[i].textContent = "";
+        cells[i].className = "cell";
+
+    }
+
+
+    document.getElementById("turnText")
+        .textContent =
+        "PLAYER X'S TURN";
+
+}
+
+
+/* =====================================================
+   CELL EVENTS
+===================================================== */
+
+var cells =
+    document.querySelectorAll(".cell");
+
+
+for(var i=0;i<cells.length;i++){
+
+    cells[i].addEventListener(
+        "click",
+        function(){
+
+            var index =
+                Number(
+                    this.getAttribute("data-index")
+                );
+
+            playMove(index);
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   PLAYER MOVE
+===================================================== */
+
+function playMove(index){
+
+    if(gameOver){
+        return;
+    }
+
+    if(board[index] !== ""){
+        return;
+    }
+
+    if(
+        mode === "ai" &&
+        currentPlayer === "O"
+    ){
+        return;
+    }
+
+
+    board[index] = currentPlayer;
+
+    drawBoard();
+
+
+    var result =
+        checkWinner();
+
+
+    if(result){
+
+        finishGame(result);
+        return;
+
+    }
+
+
+    currentPlayer =
+        currentPlayer === "X"
+        ? "O"
+        : "X";
+
+
+    document.getElementById("turnText")
+        .textContent =
+        "PLAYER " +
+        currentPlayer +
+        "'S TURN";
+
+
+    if(
+        mode === "ai" &&
+        currentPlayer === "O"
+    ){
+
+        document.getElementById("turnText")
+            .textContent =
+            "AI IS THINKING...";
+
+        setTimeout(aiMove,450);
+
+    }
+
+}
+
+
+/* =====================================================
+   DRAW BOARD
+===================================================== */
+
+function drawBoard(){
+
+    var cells =
+        document.querySelectorAll(".cell");
+
+
+    for(var i=0;i<cells.length;i++){
+
+        cells[i].textContent =
+            board[i];
+
+        cells[i].className =
+            "cell";
+
+
+        if(board[i] === "X"){
+
+            cells[i]
+                .classList
+                .add("x");
+
+        }
+
+
+        if(board[i] === "O"){
+
+            cells[i]
+                .classList
+                .add("o");
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   WIN CHECK
+===================================================== */
+
+function checkWinner(){
+
+    var combos = [
+
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+
+        [0,4,8],
+        [2,4,6]
+
+    ];
+
+
+    for(var i=0;i<combos.length;i++){
+
+        var a = combos[i][0];
+        var b = combos[i][1];
+        var c = combos[i][2];
+
+
+        if(
+            board[a] !== "" &&
+            board[a] === board[b] &&
+            board[b] === board[c]
+        ){
+
+            return board[a];
+
+        }
+
+    }
+
+
+    for(var j=0;j<9;j++){
+
+        if(board[j] === ""){
+
+            return null;
+
+        }
+
+    }
+
+
+    return "draw";
+
+}
+
+
+/* =====================================================
+   AI MOVE
+===================================================== */
+
+function aiMove(){
+
+    if(gameOver){
+        return;
+    }
+
+
+    var empty = [];
+
+
+    for(var i=0;i<9;i++){
+
+        if(board[i] === ""){
+
+            empty.push(i);
+
+        }
+
+    }
+
+
+    if(empty.length === 0){
+        return;
+    }
+
+
+    var move;
+
+
+    /* EASY */
+
+    if(difficulty === "easy"){
+
+        move =
+            empty[
+                Math.floor(
+                    Math.random()*empty.length
+                )
+            ];
+
+    }
+
+
+    /* MEDIUM */
+
+    else if(difficulty === "medium"){
+
+        if(Math.random() < 0.7){
+
+            move = bestMove();
+
+        }else{
+
+            move =
+                empty[
+                    Math.floor(
+                        Math.random()*empty.length
+                    )
+                ];
+
+        }
+
+    }
+
+
+    /* HARD / LEGENDARY */
+
+    else{
+
+        move = bestMove();
+
+    }
+
+
+    board[move] = "O";
+
+    drawBoard();
+
+
+    var result =
+        checkWinner();
+
+
+    if(result){
+
+        finishGame(result);
+        return;
+
+    }
+
+
+    currentPlayer = "X";
+
+    document.getElementById("turnText")
+        .textContent =
+        "PLAYER X'S TURN";
+
+}
+
+
+/* =====================================================
+   BEST AI MOVE
+===================================================== */
+
+function bestMove(){
+
+    var empty = [];
+
+
+    for(var i=0;i<9;i++){
+
+        if(board[i] === ""){
+
+            empty.push(i);
+
+        }
+
+    }
+
+
+    /* AI CAN WIN */
+
+    for(var i=0;i<empty.length;i++){
+
+        var pos = empty[i];
+
+        board[pos] = "O";
+
+
+        if(checkWinner() === "O"){
+
+            board[pos] = "";
+
+            return pos;
+
+        }
+
+
+        board[pos] = "";
+
+    }
+
+
+    /* BLOCK PLAYER */
+
+    for(var j=0;j<empty.length;j++){
+
+        var block = empty[j];
+
+        board[block] = "X";
+
+
+        if(checkWinner() === "X"){
+
+            board[block] = "";
+
+            return block;
+
+        }
+
+
+        board[block] = "";
+
+    }
+
+
+    /* CENTER */
+
+    if(board[4] === ""){
+
+        return 4;
+
+    }
+
+
+    /* CORNERS */
+
+    var corners =
+        [0,2,6,8];
+
+    var freeCorners = [];
+
+
+    for(var k=0;k<corners.length;k++){
+
+        if(board[corners[k]] === ""){
+
+            freeCorners.push(
+                corners[k]
+            );
+
+        }
+
+    }
+
+
+    if(freeCorners.length > 0){
+
+        return freeCorners[
+            Math.floor(
+                Math.random()*freeCorners.length
+            )
+        ];
+
+    }
+
+
+    return empty[
+        Math.floor(
+            Math.random()*empty.length
+        )
+    ];
+
+}
+
+
+/* =====================================================
+   FINISH GAME
+===================================================== */
+
+function finishGame(result){
+
+    gameOver = true;
+
+    var change = 0;
+    var message = "";
+
+
+    if(result === "X"){
+
+        data.wins++;
+
+        change = 30;
+
+        data.rp += 30;
+
+        message =
+            "🏆 LEGENDARY WIN!";
+
+    }
+
+
+    else if(result === "O"){
+
+        data.losses++;
+
+        change = -20;
+
+        data.rp =
+            Math.max(
+                0,
+                data.rp - 20
+            );
+
+        message =
+            "😢 DEFEAT!";
+
+    }
+
+
+    else{
+
+        data.ties++;
+
+        change = 5;
+
+        data.rp += 5;
+
+        message =
+            "🤝 DRAW!";
+
+    }
+
+
+    saveData();
+
+    updateUI();
+
+
+    document.getElementById("resultText")
+        .textContent = message;
+
+
+    document.getElementById("rpChange")
+        .textContent =
+        change >= 0
+        ? "+" + change + " RP"
+        : change + " RP";
+
+
+    document.getElementById("resultModal")
+        .classList
+        .add("show");
+
+}
+
+
+/* =====================================================
+   RESULT MODAL
+===================================================== */
+
+function closeResult(){
+
+    document.getElementById("resultModal")
+        .classList
+        .remove("show");
+
+}
+
+
+/* =====================================================
+   BACK TO MENU
+===================================================== */
+
+function backToMenu(){
+
+    closeResult();
+
+    document.getElementById("gameScreen")
+        .style.display = "none";
+
+    document.getElementById("startScreen")
+        .style.display = "flex";
+
+    document.getElementById("playerName")
+        .value =
+        data.name;
+
+}
+
+
+/* =====================================================
+   OPEN RANKS
+===================================================== */
+
+function openRanks(){
+
+    var list =
+        document.getElementById("rankList");
+
+
+    list.innerHTML = "";
+
+
+    var current =
+        getRank();
+
+
+    for(var i=0;i<ranks.length;i++){
+
+        var rank =
+            ranks[i];
+
+
+        var row =
+            document.createElement("div");
+
+
+        row.className =
+            "rankRow";
+
+
+        if(rank.name === current.name){
+
+            row.classList
+                .add("current");
+
+        }
+
+
+        var maxText =
+            rank.max >= 999999
+            ? "+"
+            : " - " + rank.max;
+
+
+        row.innerHTML =
+            "<div class='rankLeft'>" +
+                "<span>" +
+                    rank.icon +
+                "</span>" +
+                "<b>" +
+                    rank.name +
+                "</b>" +
+            "</div>" +
+            "<span>" +
+                rank.min +
+                maxText +
+                " RP" +
+            "</span>";
+
+
+        list.appendChild(row);
+
+    }
+
+
+    document.getElementById("rankModal")
+        .classList
+        .add("show");
+
+}
+
+
+/* =====================================================
+   CLOSE RANKS
+===================================================== */
+
+function closeRanks(){
+
+    document.getElementById("rankModal")
+        .classList
+        .remove("show");
+
+}
+
+
+/* =====================================================
+   ERROR DISPLAY
+===================================================== */
+
+window.onerror =
+function(message,source,line){
+
+    var box =
+        document.getElementById("errorBox");
+
+
+    if(box){
+
+        box.style.display = "block";
+
+
+        box.innerHTML =
+            "<b>Game Error</b><br>" +
+            message +
+            "<br>Line: " +
+            line;
+
+    }
+
+
+    return false;
+
+};
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+updateUI();
+
+</script>
+
+</body>
+</html>
